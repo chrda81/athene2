@@ -81,7 +81,7 @@ class Normalizer implements NormalizerInterface
         foreach ($this->adapters as $class => $adapterClass) {
             if ($object instanceof $class) {
                 /* @var $adapterClass Adapter\AdapterInterface */
-                $adapter    = $this->pluginManager->get($adapterClass);
+                $adapter = $this->pluginManager->get($adapterClass);
                 $adapter->setTranslator($this->translator);
                 $normalized = $adapter->normalize($object);
                 // $this->storage->setItem($key, $normalized);

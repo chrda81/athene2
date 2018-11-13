@@ -27,15 +27,20 @@ use Entity\Entity\EntityInterface;
 
 class EntityAdapter extends AbstractAdapter
 {
+    protected function getNormalizedContext($object)
+    {
+        return new EntityNormalizedContext($object);
+    }
+}
+
+class EntityNormalizedContext extends AbstractNormalized
+{
     /**
      * @return EntityInterface
      */
-    public function getObject()
-    {
-        return $this->object;
-    }
+    protected $object;
 
-    public function isValid($object)
+    protected function isValid($object)
     {
         return $object instanceof EntityInterface;
     }

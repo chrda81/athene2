@@ -27,7 +27,7 @@ use DateTime;
 use Normalizer\Exception\RuntimeException;
 use Zend\I18n\Translator\TranslatorAwareTrait;
 
-abstract class AbstractAdapter implements AdapterInterface
+abstract class AbstractAdapter
 {
     use TranslatorAwareTrait;
     protected $object;
@@ -42,7 +42,7 @@ abstract class AbstractAdapter implements AdapterInterface
         $this->object = $object;
     }
 
-    public function normalize($object)
+    public function normalize()
     {
         if (!$this->isValid($object)) {
             throw new RuntimeException(sprintf(
@@ -51,109 +51,11 @@ abstract class AbstractAdapter implements AdapterInterface
             ));
         }
 
-
-        $this->setObject($object);
-
-        $normalized = new Normalized([
-            'title'       => $this->getTitle(),
-            'content'     => $this->getContent(),
-            'type'        => $this->getType(),
-            'routeName'   => $this->getRouteName(),
-            'routeParams' => $this->getRouteParams(),
-            'id'          => $this->getId(),
-            'metadata'    => [
-                'title'            => $this->getHeadTitle(),
-                'creationDate'     => $this->getCreationDate() ? $this->getCreationDate() : new DateTime(),
-                'description'      => $this->getDescription(),
-                'metaDescription'  => $this->getMetaDescription(),
-                'keywords'         => $this->getKeywords(),
-                'lastModified'     => $this->getLastModified() ? $this->getLastModified() : new DateTime(),
-                'robots'           => $this->isTrashed() ? 'noindex' : 'all',
-            ],
-        ]);
-
-        return $normalized;
+        return $this->createNormalizedContext($object)->normalize();
     }
 
     /**
-     * @return string
+     * @return AbstractNormalizedContext
      */
-    abstract protected function getContent();
-
-    /**
-     * @return string
-     */
-    abstract protected function getCreationDate();
-
-    /**
-     * @return string
-     */
-    protected function getDescription()
-    {
-        return $this->getContent();
-    }
-
-    /**
-     * @return string
-     */
-    protected function getMetaDescription()
-    {
-        return $this->getDescription();
-    }
-
-    /**
-     * @return DateTime
-     */
-    protected function getLastModified()
-    {
-        return new DateTime();
-    }
-
-    /**
-     * @return int
-     */
-    abstract protected function getId();
-
-    /**
-     * @return string
-     */
-    abstract protected function getKeywords();
-
-    /**
-     * @return string
-     */
-    abstract protected function getPreview();
-
-    /**
-     * @return string
-     */
-    abstract protected function getRouteName();
-
-    /**
-     * @return string
-     */
-    abstract protected function getRouteParams();
-
-    /**
-     * @return string
-     */
-    abstract protected function getTitle();
-
-    /**
-     * @return string
-     */
-    abstract protected function getType();
-
-    /**
-     * @return boolean
-     */
-    abstract protected function isTrashed();
-
-    /**
-     * @return string
-     */
-    protected function getHeadTitle()
-    {
-        return $this->getTitle();
-    }
+    abstract protected function createNormalizedContext($object);
 }
