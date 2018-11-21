@@ -4,9 +4,21 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+### Changed
+
+- Build markdown service from `src/athene2-editor-server` and use Node v10
+
+### Removed
+
+- Remove remaining Vagrant files
+
 ### Fixed
 
 - Handle `ggt/{id}` links correctly
+
+### Breaking Changes
+
+- Production server needs Node v10
 
 ## [Build 3] - 2018-11-16
 
